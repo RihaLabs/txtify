@@ -1,312 +1,1807 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net file:; style-src 'unsafe-inline'; img-src 'self' data: blob: file: https://YOURCODE.goatcounter.com; connect-src https://cdn.jsdelivr.net data: blob:; worker-src blob: https://cdn.jsdelivr.net; form-action 'none'; base-uri 'none'; object-src 'none'; frame-src 'none'">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TXTify – Convert Any File to TXT for AI Chats | Free &amp; Private</title>
-<meta name="description" content="Free in-browser converter: turn PDF, Word, Excel, code, ZIP and whole folders into one TXT for ChatGPT, Claude and other AI. Private, nothing is uploaded.">
-<meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="canonical" href="https://rihalabs.github.io/txtify/">
-<link rel="icon" href="logo.svg" type="image/svg+xml">
-<meta name="theme-color" content="#e9edf2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b111b" media="(prefers-color-scheme: dark)">
-<meta property="og:type" content="website"><meta property="og:site_name" content="TXTify"><meta property="og:title" content="TXTify – Convert Any File to TXT for AI Chats"><meta property="og:description" content="Free, private, in-browser converter for PDF, Word, Excel, code, ZIP and folders. One clean TXT for ChatGPT, Claude and more."><meta property="og:url" content="https://rihalabs.github.io/txtify/">
-<meta property="og:image" content="https://rihalabs.github.io/txtify/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"TXTify","url":"https://rihalabs.github.io/txtify/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any (web browser)","description":"Free, open-source, in-browser tool that converts PDF, Word, Excel, code, data files, archives and folders into plain TXT for ChatGPT, Claude and other AI chats. Files never leave your computer.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"license":"https://opensource.org/licenses/MIT","author":{"@type":"Organization","name":"RihaLabs","url":"https://github.com/RihaLabs"},"featureList":["Convert files, ZIP, RAR and 7z archives and folders to TXT","Merge many files into one TXT","Structure-only export for data files","Runs fully in the browser"]}</script>
-<style>
-:root{--bg:#e9edf2;--paper:#fff;--ink:#0f1b2d;--mut:#5d6b80;--line:#ccd3de;--acc:#2b50ff;--bad:#c92a2a;color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b111b;--paper:#131b29;--ink:#e8edf6;--mut:#8d9ab0;--line:#26324a;--acc:#6f8cff;--bad:#ff7b7b;color-scheme:dark}}
-:root[data-theme=dark]{--bg:#0b111b;--paper:#131b29;--ink:#e8edf6;--mut:#8d9ab0;--line:#26324a;--acc:#6f8cff;--bad:#ff7b7b;color-scheme:dark}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.app{height:100dvh;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:14px}
-.col{display:flex;flex-direction:column;gap:14px;min-height:0}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:14px;min-height:0;display:flex;flex-direction:column}
-.grow{flex:1}
-.scroll{overflow:auto;flex:1;display:block}
-.top{display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:24px;letter-spacing:-.02em}
-.logo img{display:block}
-.logo i{font-style:normal;color:var(--acc)}
-h1{font-size:clamp(24px,2.5vw,34px);line-height:1.05;letter-spacing:-.03em;margin:16px 0 8px;font-weight:800}
-.brand p{margin:0;color:var(--mut)}
-button{font:inherit;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink);padding:6px 14px;border-radius:999px}
-button:hover,button:focus-visible{border-color:var(--acc);outline:0}
-button:disabled{opacity:.4;cursor:default}
-button.pri{background:var(--acc);border-color:var(--acc);color:#fff}
-.ic{width:34px;height:34px;padding:0;display:grid;place-items:center}
-label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;margin-bottom:10px}
-label small{display:block;color:var(--mut);font-size:12px}
-input[type=checkbox]{accent-color:var(--acc);width:16px;height:16px;flex:none;margin:2px 0 0}
-fieldset{border:0;min-width:0;margin:-4px 0 8px 25px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
-fieldset label{margin-bottom:6px;align-items:center}
-fieldset:disabled{opacity:.45}
-select{font:inherit;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:0 2px;max-width:100%}
-.foot{margin:14px 0 0;color:var(--mut);font-size:12px}
-.foot a{color:var(--acc)}
-#drop{border:2px dashed var(--line);border-radius:6px;padding:22px 12px;text-align:center;transition:border-color .15s,background .15s}
-#drop.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
-#drop b{display:block;font-size:17px}
-#drop small{display:block;color:var(--mut);margin:2px 0 12px}
-.lh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-#fail{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 10px;margin-bottom:6px;border:1px solid var(--bad);border-radius:6px;font-size:12.5px;color:var(--bad)}
-#fail[hidden]{display:none}
-.sub{display:flex;color:var(--mut);font-size:10.5px}
-.sub i,.c{width:56px;flex:none;text-align:center;font-style:normal}
-.sub .fl{flex:1}
-.sub .sp2{width:46px;flex:none}
-#list{list-style:none;margin:0;padding:0;overflow:auto;flex:1;min-height:0;font-size:13px}
-#list li{display:flex;align-items:center;padding:5px 0;border-top:1px solid var(--line);cursor:pointer}
-#list li.act{background:color-mix(in srgb,var(--acc) 10%,transparent)}
-.mv{width:22px;flex:none;display:flex;flex-direction:column}
-.mv button{width:22px;height:13px;padding:0;border:0;color:var(--mut);font-size:9px;line-height:1}
-.mv button:disabled{opacity:.25}
-.nm{flex:1;min-width:0}
-.nm .p,.nm em{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.nm em{font-style:normal;color:var(--mut);font-size:11.5px}
-.nm em.bad{color:var(--bad)}
-.c{display:grid;place-items:center}
-.x{width:24px;height:26px;padding:0;border:0;color:var(--mut);font-size:18px;line-height:1}
-.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;color:var(--mut)}
-.bar div{display:flex;gap:6px;flex-wrap:wrap}
-#out{flex:1;min-height:0;overflow:auto;position:relative;border:1px solid var(--line);border-radius:6px}
-#out:empty::before{content:attr(data-ph);display:block;padding:12px;color:var(--mut)}
-.blk{margin:0;padding:12px;font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;border-bottom:1px solid var(--line)}
-.blk.act{box-shadow:inset 3px 0 var(--acc)}
-#fail div{display:flex;gap:6px}
-#ed.on{border-color:var(--acc);color:var(--acc)}
-#out.editing{outline:2px solid var(--acc);outline-offset:-2px}
-.blk[contenteditable]:focus{outline:0}
-details{margin:8px 0;border-top:1px solid var(--line);padding-top:8px}
-summary{cursor:pointer;font-weight:600}
-details p{margin:6px 0;color:var(--mut);font-size:13px}
-[hidden]{display:none!important}
-@media(max-width:480px){.sub{font-size:9px}.sub i,.c{width:44px}}
-@media(max-width:980px){body{height:auto}.app{display:flex;flex-direction:column;height:auto}#left,#mid,#right{display:contents}.brand{order:1}#mid .card:first-child{order:2}.opts{order:3;overflow:visible}#mid .card.grow{order:4}#right .card{order:5}#list{max-height:45vh}#out{height:60vh;flex:none}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
-</head>
-<body>
-<noscript>TXTify needs JavaScript to convert files in your browser.</noscript>
-<main class="app">
-<div class="col" id="left">
- <section class="brand card">
-  <div class="top"><div class="logo"><img src="logo.svg" height="30" alt=""><span>TXT<i>ify</i></span></div><button id="theme" class="ic" aria-label="Switch light or dark mode"></button></div>
-  <h1>Convert any file to TXT for AI chats</h1>
-  <p>TXTify turns PDF, Word, Excel, code, data files, ZIP archives and whole folders into clean plain text that ChatGPT, Claude and other AI chats can read. Free and open source. It all runs in your browser, so your files never leave your computer.</p>
- </section>
- <section class="opts card scroll">
-  <label><input type="checkbox" id="merge" checked><span>Merge into one TXT<small>Off: one file at a time in the preview</small></span></label>
-  <label><input type="checkbox" id="name" checked><span>Add file name<small>Name line above each file, shows where it starts</small></span></label>
-  <label><input type="checkbox" id="meta" checked><span>Add file info<small>Path, type, size and more above each file</small></span></label>
-  <fieldset id="fi">
-   <label><input type="checkbox" id="fPath" checked>Path</label>
-   <label><input type="checkbox" id="fType" checked>Type</label>
-   <label><input type="checkbox" id="fSize" checked>Size</label>
-   <label><input type="checkbox" id="fMod">Modified</label>
-   <label><input type="checkbox" id="fChars">Characters</label>
-   <label><input type="checkbox" id="fLines">Lines</label>
-  </fieldset>
-  <label><input type="checkbox" id="compact"><span>Only relevant content<small>Skips notebook outputs, empty cells, HTML markup, JSON whitespace</small></span></label>
-  <label><input type="checkbox" id="struct"><span>Data files: structure only, no values<small>Column names, types, row counts. Safe for sensitive data</small></span></label>
-  <label><input type="checkbox" id="ocr"><span>Read text from images (OCR)<small>Slower, English only</small></span></label>
-  <label><input type="checkbox" id="strs"><span>Read text from unknown binary files<small>Best effort, can be noisy</small></span></label>
-  <details><summary>Which files can TXTify convert?</summary><p>PDF, Word, Excel, PowerPoint, OpenDocument, EPUB, Jupyter notebooks, code and text files, SAS, SPSS and Stata datasets, Parquet, SQLite, CSV, images with OCR, and archives such as ZIP, RAR and 7z. Whole folders work too.</p></details>
-  <details><summary>Why convert files to TXT?</summary><p>AI chats and agents often reject formats like XLSX or ZIP but always accept plain text, which also uses fewer tokens. Merge a whole project into one TXT and paste or upload it into ChatGPT, Claude or Gemini.</p></details>
-  <details><summary>Is it safe for sensitive data?</summary><p>Your files are processed inside your browser and are never uploaded. Only open-source converter libraries are downloaded from a CDN. For data files you can export just the structure, such as column names and types, without any values.</p></details>
-  <details><summary>Is TXTify free?</summary><p>Yes. It is free, open source (MIT) and needs no account or AI service. Supported data formats include SAS, Parquet, SQLite, Excel, CSV and Python pickle files.</p></details>
-  <p class="foot">Free and open source (MIT) by <a href="https://github.com/RihaLabs">RihaLabs</a>. No uploads, no cookies, no AI. Only anonymous page-view counts.</p>
- </section>
-</div>
-<div class="col" id="mid">
- <section class="card"><div id="drop"><b>Drop files or folders here</b><small>ZIP, RAR, 7z, TAR and other archives are opened automatically</small>
-  <button id="b1">Choose files</button> <button id="b2">Choose folder</button></div></section>
- <section class="card grow">
-  <div class="lh"><b id="cnt">No files yet</b><button id="clr" hidden>Clear all</button></div>
-  <div id="fail" hidden><span></span><div><button id="cf">Copy list</button><button id="rf">Remove them</button></div></div>
-  <div class="sub" hidden><span class="fl"></span><i title="Add the file name above this file">Name</i><i title="Add file info for this file">Info</i><i title="Only relevant content">Relevant</i><i title="Structure only, no values">Structure</i><span class="sp2"></span></div>
-  <ul id="list"></ul>
- </section>
-</div>
-<div class="col" id="right"><section class="card grow">
- <div class="bar"><span id="stat">Your TXT appears here</span><div><button id="ed" disabled aria-pressed="false" title="Edit the text before copying or downloading">Edit</button><button id="cp" disabled>Copy</button><button id="dl" class="pri" disabled>Download</button><button id="dla" disabled title="ZIP with one TXT per file">Download all</button></div></div>
- <div id="out" data-ph="Add a file to see the result."></div>
-</section></div>
-</main>
-<input type="file" id="f1" multiple hidden><input type="file" id="f2" webkitdirectory hidden>
-<script>
-const $=s=>document.querySelector(s),CDN='https://cdn.jsdelivr.net/npm/';
-const LIB={jszip:CDN+'jszip@3.10.1/dist/jszip.min.js',xlsx:CDN+'xlsx@0.18.5/dist/xlsx.full.min.js',mammoth:CDN+'mammoth@1.8.0/mammoth.browser.min.js',pdf:CDN+'pdfjs-dist@3.11.174/build/pdf.min.js',ocr:CDN+'tesseract.js@5.1.1/dist/tesseract.min.js',stat:'data-engines.js',sql:CDN+'sql.js@1.10.3/dist/sql-wasm.js'},got={};
-const lib=k=>got[k]||(got[k]=new Promise((ok,no)=>{const s=document.createElement('script');s.src=LIB[k];s.onload=ok;s.onerror=()=>{delete got[k];no(new Error('needs internet to load '+k))};document.head.append(s)}));
-const ext=p=>(p.split('/').pop().match(/\.([^.]+)$/)||[0,''])[1].toLowerCase();
-const fmt=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(1)+' KB':(n/1048576).toFixed(1)+' MB';
-const dec=s=>{const t=document.createElement('textarea');t.innerHTML=s;return t.value};
-const cell=v=>{if(v==null)return'';v=String(v);return/[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
-const csv=(h,rows)=>h.join(',')+'\n'+rows.map(r=>r.map(cell).join(',')).join('\n');
-const SO='[structure only - no data values included]\n';
-const kind=v=>v==null||v===''?'':v instanceof Date?'date':typeof v==='number'?(Number.isInteger(v)?'integer':'number'):typeof v==='boolean'?'boolean':'text';
-const shape=(rows,n)=>{const h=rows[0]||[],d=rows.slice(1,1001),nc=Math.max(h.length,...d.map(r=>r.length));let t=SO+'rows (excluding header): '+(n==null?Math.max(rows.length-1,0):n-1)+'\ncolumns: '+nc+'\n(first row is assumed to be the header)\n';for(let j=0;j<nc;j++){const k=new Set();let e=0;d.forEach(r=>{const x=kind(r[j]);x?k.add(x):e++});t+=(j+1)+'. '+(h[j]??'(no header)')+' : '+([...k].join('/')||'empty')+(e?' (empty cells in first 1000 rows: '+e+')':'')+'\n'}return t};
-const strings=b=>{const s=new TextDecoder('windows-1252').decode(b);return[...new Set([...(s.match(/[\x20-\x7e]{5,}/g)||[]),...(s.match(/(?:[\x20-\x7e]\0){5,}/g)||[]).map(x=>x.replace(/\0/g,''))])].join('\n')};
-const ARC=/^(zip|jar|whl|egp|apk|nupkg|7z|rar|tar|gz|tgz|bz2|tbz2|xz|txz|lzma|cab|iso|arj|cpio|rpm|deb)$/,ZIPS=/^(zip|jar|whl|egp|apk|nupkg)$/,DOC=/^(docx|xlsx|xlsm|xlsb|pptx|odt|odp|ods|fods|epub|numbers)$/;
-let sz,n7=0,sqlP;
-const seven=()=>sz||(sz=(async()=>{for(const v of['1.2.0']){const b=CDN+'7z-wasm@'+v+'/';try{return await(await import(b+'7zz.es6.js')).default({locateFile:f=>b+f,print(){},printErr(){}})}catch(e){}}throw new Error('needs internet to load the 7z engine')})());
-async function unpack7(f){
- const s=await seven(),FS=s.FS,id='/a'+n7++,inp=id+'/'+f.name.replace(/[^\w.\-]/g,'_'),o=id+'/o',r=[];
- FS.mkdir(id);FS.writeFile(inp,new Uint8Array(await f.arrayBuffer()));
- try{s.callMain(['x',inp,'-o'+o,'-y','-bd'])}catch(e){}
- const w=d=>{for(const n of FS.readdir(d))if(n!=='.'&&n!=='..'){const p=d+'/'+n;if(FS.isDir(FS.stat(p).mode)){w(p);FS.rmdir(p)}else{r.push({path:p.slice(o.length+1),file:new File([FS.readFile(p)],n)});FS.unlink(p)}}};
- try{w(o);FS.rmdir(o)}catch(e){}
- try{FS.unlink(inp);FS.rmdir(id)}catch(e){}
- if(!r.length)throw new Error('empty, encrypted or unsupported');return r}
-async function unzip(f){await lib('jszip');const z=await JSZip.loadAsync(f);return Promise.all(Object.entries(z.files).filter(([,e])=>!e.dir).map(async([n,e])=>({path:n,file:new File([await e.async('blob')],n.split('/').pop(),{lastModified:+e.date})})))}
-async function sqlite(b,o){await lib('sql');const S=await(sqlP||(sqlP=initSqlJs({locateFile:x=>CDN+'sql.js@1.10.3/dist/'+x}))),db=new S.Database(b),r=[];
- if(o.struct){const q=db.exec("select type,name,sql from sqlite_master where sql is not null")[0];let t=SO;for(const[ty,n,sql]of q?q.values:[]){let c='';if(ty==='table')c=' -- rows: '+db.exec('select count(*) from "'+n.replace(/"/g,'""')+'"')[0].values[0][0];t+=sql+';'+c+'\n'}db.close();return t}
- for(const[n]of(db.exec("select name from sqlite_master where type='table'")[0]||{values:[]}).values){const q=db.exec('select * from "'+n.replace(/"/g,'""')+'"')[0];r.push('## Table: '+n+(q?' ('+q.values.length+' rows)\n'+csv(q.columns,q.values):' (empty)'))}
- db.close();return r.join('\n\n')}
-async function magic(f){const h=[...new Uint8Array(await f.slice(0,6).arrayBuffer())].map(x=>x.toString(16).padStart(2,'0')).join('');return/^504b0304/.test(h)?'zip':/^377abcaf/.test(h)?'7z':/^52617221/.test(h)?'rar':/^1f8b/.test(h)?'gz':/^425a68/.test(h)?'bz2':/^fd377a585a/.test(h)?'xz':''}
-const JUNK=/(^|\/)(__MACOSX|node_modules|\.git)\/|\.DS_Store$|Thumbs\.db$/;
-let items=[],runId=0,sel=null,blocks=new Map(),dlName='TXTify-merged.txt',cur=[],edit=false,tm=0;
-const REL=/^(ipynb|html|htm|json|xlsx|xlsm|xlsb|xls|ods|fods|dbf|dif|slk|prn|wk1|wk3|wks|qpw|numbers|pdf|svg|xml|xsd|xsl|xslt|plist|rss|kml|gpx|sas7bdat|xpt|sav|dta|por)$/,DATA=/^(sas7bdat|xpt|sav|dta|por|parquet|sqlite3?|db|xlsx|xlsm|xlsb|xls|ods|fods|dbf|dif|slk|prn|wk1|wk3|wks|qpw|numbers|csv|tsv|npy|pkl|pickle)$/;
-const ck=id=>$('#'+id).checked,esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const opts=()=>({merge:ck('merge'),meta:ck('meta'),compact:ck('compact'),struct:ck('struct'),ocr:ck('ocr'),strs:ck('strs'),name:ck('name'),fPath:ck('fPath'),fType:ck('fType'),fSize:ck('fSize'),fMod:ck('fMod'),fChars:ck('fChars'),fLines:ck('fLines')});
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net file:; style-src 'unsafe-inline'; img-src 'self' data: blob: file: https://rihalabs.goatcounter.com; connect-src https://cdn.jsdelivr.net data: blob:; worker-src blob: https://cdn.jsdelivr.net; form-action 'none'; base-uri 'none'; object-src 'none'; frame-src 'none'"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>
+      TXTify – Convert Any File to TXT for AI Chats | Free &amp; Private
+    </title>
+    <meta
+      name="description"
+      content="Free in-browser converter: turn PDF, Word, Excel, code, ZIP and whole folders into one TXT for ChatGPT, Claude and other AI. Private, nothing is uploaded."
+    />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta
+      name="google-site-verification"
+      content="ex85Oyea35E0vOyAjLc-P9S2VIkyTaKpHrjDF5H_gmI"
+    />
+    <link rel="canonical" href="https://rihalabs.github.io/txtify/" />
+    <link rel="icon" href="logo.svg" type="image/svg+xml" />
+    <meta
+      name="theme-color"
+      content="#e9edf2"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0b111b"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TXTify" />
+    <meta
+      property="og:title"
+      content="TXTify – Convert Any File to TXT for AI Chats"
+    />
+    <meta
+      property="og:description"
+      content="Free, private, in-browser converter for PDF, Word, Excel, code, ZIP and folders. One clean TXT for ChatGPT, Claude and more."
+    />
+    <meta property="og:url" content="https://rihalabs.github.io/txtify/" />
+    <meta
+      property="og:image"
+      content="https://rihalabs.github.io/txtify/og-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TXTify",
+        "url": "https://rihalabs.github.io/txtify/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any (web browser)",
+        "description": "Free, open-source, in-browser tool that converts PDF, Word, Excel, code, data files, archives and folders into plain TXT for ChatGPT, Claude and other AI chats. Files never leave your computer.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "license": "https://opensource.org/licenses/MIT",
+        "author": {
+          "@type": "Organization",
+          "name": "RihaLabs",
+          "url": "https://github.com/RihaLabs"
+        },
+        "featureList": [
+          "Convert files, ZIP, RAR and 7z archives and folders to TXT",
+          "Merge many files into one TXT",
+          "Structure-only export for data files",
+          "Runs fully in the browser"
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        --bg: #e9edf2;
+        --paper: #fff;
+        --ink: #0f1b2d;
+        --mut: #5d6b80;
+        --line: #ccd3de;
+        --acc: #2b50ff;
+        --bad: #c92a2a;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0b111b;
+          --paper: #131b29;
+          --ink: #e8edf6;
+          --mut: #8d9ab0;
+          --line: #26324a;
+          --acc: #6f8cff;
+          --bad: #ff7b7b;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0b111b;
+        --paper: #131b29;
+        --ink: #e8edf6;
+        --mut: #8d9ab0;
+        --line: #26324a;
+        --acc: #6f8cff;
+        --bad: #ff7b7b;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          14px/1.45 system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      .app {
+        height: 100dvh;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        padding: 14px;
+      }
+      .col {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-height: 0;
+      }
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 14px;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .grow {
+        flex: 1;
+      }
+      .scroll {
+        overflow: auto;
+        flex: 1;
+        display: block;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        font-size: 24px;
+        letter-spacing: -0.02em;
+      }
+      .logo img {
+        display: block;
+      }
+      .logo i {
+        font-style: normal;
+        color: var(--acc);
+      }
+      h1 {
+        font-size: clamp(24px, 2.5vw, 34px);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        margin: 16px 0 8px;
+        font-weight: 800;
+      }
+      .brand p {
+        margin: 0;
+        color: var(--mut);
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        padding: 6px 14px;
+        border-radius: 999px;
+      }
+      button:hover,
+      button:focus-visible {
+        border-color: var(--acc);
+        outline: 0;
+      }
+      button:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+      button.pri {
+        background: var(--acc);
+        border-color: var(--acc);
+        color: #fff;
+      }
+      .ic {
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        display: grid;
+        place-items: center;
+      }
+      label {
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+      label small {
+        display: block;
+        color: var(--mut);
+        font-size: 12px;
+      }
+      input[type="checkbox"] {
+        accent-color: var(--acc);
+        width: 16px;
+        height: 16px;
+        flex: none;
+        margin: 2px 0 0;
+      }
+      fieldset {
+        border: 0;
+        min-width: 0;
+        margin: -4px 0 8px 25px;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 10px;
+      }
+      fieldset label {
+        margin-bottom: 6px;
+        align-items: center;
+      }
+      fieldset:disabled {
+        opacity: 0.45;
+      }
+      select {
+        font: inherit;
+        background: var(--paper);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 0 2px;
+        max-width: 100%;
+      }
+      .foot {
+        margin: 14px 0 0;
+        color: var(--mut);
+        font-size: 12px;
+      }
+      .foot a {
+        color: var(--acc);
+      }
+      #drop {
+        border: 2px dashed var(--line);
+        border-radius: 6px;
+        padding: 22px 12px;
+        text-align: center;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+      }
+      #drop.on {
+        border-color: var(--acc);
+        background: color-mix(in srgb, var(--acc) 8%, transparent);
+      }
+      #drop b {
+        display: block;
+        font-size: 17px;
+      }
+      #drop small {
+        display: block;
+        color: var(--mut);
+        margin: 2px 0 12px;
+      }
+      .lh {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      #fail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 10px;
+        margin-bottom: 6px;
+        border: 1px solid var(--bad);
+        border-radius: 6px;
+        font-size: 12.5px;
+        color: var(--bad);
+      }
+      #fail[hidden] {
+        display: none;
+      }
+      .sub {
+        display: flex;
+        color: var(--mut);
+        font-size: 10.5px;
+      }
+      .sub i,
+      .c {
+        width: 56px;
+        flex: none;
+        text-align: center;
+        font-style: normal;
+      }
+      .sub .fl {
+        flex: 1;
+      }
+      .sub .sp2 {
+        width: 46px;
+        flex: none;
+      }
+      #list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+        flex: 1;
+        min-height: 0;
+        font-size: 13px;
+      }
+      #list li {
+        display: flex;
+        align-items: center;
+        padding: 5px 0;
+        border-top: 1px solid var(--line);
+        cursor: pointer;
+      }
+      #list li.act {
+        background: color-mix(in srgb, var(--acc) 10%, transparent);
+      }
+      .mv {
+        width: 22px;
+        flex: none;
+        display: flex;
+        flex-direction: column;
+      }
+      .mv button {
+        width: 22px;
+        height: 13px;
+        padding: 0;
+        border: 0;
+        color: var(--mut);
+        font-size: 9px;
+        line-height: 1;
+      }
+      .mv button:disabled {
+        opacity: 0.25;
+      }
+      .nm {
+        flex: 1;
+        min-width: 0;
+      }
+      .nm .p,
+      .nm em {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .nm em {
+        font-style: normal;
+        color: var(--mut);
+        font-size: 11.5px;
+      }
+      .nm em.bad {
+        color: var(--bad);
+      }
+      .c {
+        display: grid;
+        place-items: center;
+      }
+      .x {
+        width: 24px;
+        height: 26px;
+        padding: 0;
+        border: 0;
+        color: var(--mut);
+        font-size: 18px;
+        line-height: 1;
+      }
+      .bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+        color: var(--mut);
+      }
+      .bar div {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      #out {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+      }
+      #out:empty::before {
+        content: attr(data-ph);
+        display: block;
+        padding: 12px;
+        color: var(--mut);
+      }
+      .blk {
+        margin: 0;
+        padding: 12px;
+        font:
+          12.5px/1.55 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          Consolas,
+          monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+        border-bottom: 1px solid var(--line);
+      }
+      .blk.act {
+        box-shadow: inset 3px 0 var(--acc);
+      }
+      #fail div {
+        display: flex;
+        gap: 6px;
+      }
+      #ed.on {
+        border-color: var(--acc);
+        color: var(--acc);
+      }
+      #out.editing {
+        outline: 2px solid var(--acc);
+        outline-offset: -2px;
+      }
+      .blk[contenteditable]:focus {
+        outline: 0;
+      }
+      details {
+        margin: 8px 0;
+        border-top: 1px solid var(--line);
+        padding-top: 8px;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      details p {
+        margin: 6px 0;
+        color: var(--mut);
+        font-size: 13px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      @media (max-width: 480px) {
+        .sub {
+          font-size: 9px;
+        }
+        .sub i,
+        .c {
+          width: 44px;
+        }
+      }
+      @media (max-width: 980px) {
+        body {
+          height: auto;
+        }
+        .app {
+          display: flex;
+          flex-direction: column;
+          height: auto;
+        }
+        #left,
+        #mid,
+        #right {
+          display: contents;
+        }
+        .brand {
+          order: 1;
+        }
+        #mid .card:first-child {
+          order: 2;
+        }
+        .opts {
+          order: 3;
+          overflow: visible;
+        }
+        #mid .card.grow {
+          order: 4;
+        }
+        #right .card {
+          order: 5;
+        }
+        #list {
+          max-height: 45vh;
+        }
+        #out {
+          height: 60vh;
+          flex: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript
+      >TXTify needs JavaScript to convert files in your browser.</noscript
+    >
+    <main class="app">
+      <div class="col" id="left">
+        <section class="brand card">
+          <div class="top">
+            <div class="logo">
+              <img src="logo.svg" height="30" alt="" /><span
+                >TXT<i>ify</i></span
+              >
+            </div>
+            <button
+              id="theme"
+              class="ic"
+              aria-label="Switch light or dark mode"
+            ></button>
+          </div>
+          <h1>Convert any file to TXT for AI chats</h1>
+          <p>
+            TXTify turns PDF, Word, Excel, code, data files, ZIP archives and
+            whole folders into clean plain text that ChatGPT, Claude and other
+            AI chats can read. Free and open source. It all runs in your
+            browser, so your files never leave your computer.
+          </p>
+        </section>
+        <section class="opts card scroll">
+          <label
+            ><input type="checkbox" id="merge" checked /><span
+              >Merge into one TXT<small
+                >Off: one file at a time in the preview</small
+              ></span
+            ></label
+          >
+          <label
+            ><input type="checkbox" id="name" checked /><span
+              >Add file name<small
+                >Name line above each file, shows where it starts</small
+              ></span
+            ></label
+          >
+          <label
+            ><input type="checkbox" id="meta" checked /><span
+              >Add file info<small
+                >Path, type, size and more above each file</small
+              ></span
+            ></label
+          >
+          <fieldset id="fi">
+            <label><input type="checkbox" id="fPath" checked />Path</label>
+            <label><input type="checkbox" id="fType" checked />Type</label>
+            <label><input type="checkbox" id="fSize" checked />Size</label>
+            <label><input type="checkbox" id="fMod" />Modified</label>
+            <label><input type="checkbox" id="fChars" />Characters</label>
+            <label><input type="checkbox" id="fLines" />Lines</label>
+          </fieldset>
+          <label
+            ><input type="checkbox" id="compact" /><span
+              >Only relevant content<small
+                >Skips notebook outputs, empty cells, HTML markup, JSON
+                whitespace</small
+              ></span
+            ></label
+          >
+          <label
+            ><input type="checkbox" id="struct" /><span
+              >Data files: structure only, no values<small
+                >Column names, types, row counts. Safe for sensitive data</small
+              ></span
+            ></label
+          >
+          <label
+            ><input type="checkbox" id="ocr" /><span
+              >Read text from images (OCR)<small
+                >Slower, English only</small
+              ></span
+            ></label
+          >
+          <label
+            ><input type="checkbox" id="strs" /><span
+              >Read text from unknown binary files<small
+                >Best effort, can be noisy</small
+              ></span
+            ></label
+          >
+          <details>
+            <summary>Which files can TXTify convert?</summary>
+            <p>
+              PDF, Word, Excel, PowerPoint, OpenDocument, EPUB, Jupyter
+              notebooks, code and text files, SAS, SPSS and Stata datasets,
+              Parquet, SQLite, CSV, images with OCR, and archives such as ZIP,
+              RAR and 7z. Whole folders work too.
+            </p>
+          </details>
+          <details>
+            <summary>Why convert files to TXT?</summary>
+            <p>
+              AI chats and agents often reject formats like XLSX or ZIP but
+              always accept plain text, which also uses fewer tokens. Merge a
+              whole project into one TXT and paste or upload it into ChatGPT,
+              Claude or Gemini.
+            </p>
+          </details>
+          <details>
+            <summary>Is it safe for sensitive data?</summary>
+            <p>
+              Your files are processed inside your browser and are never
+              uploaded. Only open-source converter libraries are downloaded from
+              a CDN. For data files you can export just the structure, such as
+              column names and types, without any values.
+            </p>
+          </details>
+          <details>
+            <summary>Is TXTify free?</summary>
+            <p>
+              Yes. It is free, open source (MIT) and needs no account or AI
+              service. Supported data formats include SAS, Parquet, SQLite,
+              Excel, CSV and Python pickle files.
+            </p>
+          </details>
+          <p class="foot">
+            Free and open source (MIT) by
+            <a href="https://github.com/RihaLabs">RihaLabs</a>. No uploads, no
+            cookies, no AI. Only anonymous page-view counts.
+          </p>
+        </section>
+      </div>
+      <div class="col" id="mid">
+        <section class="card">
+          <div id="drop">
+            <b>Drop files or folders here</b
+            ><small
+              >ZIP, RAR, 7z, TAR and other archives are opened
+              automatically</small
+            >
+            <button id="b1">Choose files</button>
+            <button id="b2">Choose folder</button>
+          </div>
+        </section>
+        <section class="card grow">
+          <div class="lh">
+            <b id="cnt">No files yet</b
+            ><button id="clr" hidden>Clear all</button>
+          </div>
+          <div id="fail" hidden>
+            <span></span>
+            <div>
+              <button id="cf">Copy list</button
+              ><button id="rf">Remove them</button>
+            </div>
+          </div>
+          <div class="sub" hidden>
+            <span class="fl"></span
+            ><i title="Add the file name above this file">Name</i
+            ><i title="Add file info for this file">Info</i
+            ><i title="Only relevant content">Relevant</i
+            ><i title="Structure only, no values">Structure</i
+            ><span class="sp2"></span>
+          </div>
+          <ul id="list"></ul>
+        </section>
+      </div>
+      <div class="col" id="right">
+        <section class="card grow">
+          <div class="bar">
+            <span id="stat">Your TXT appears here</span>
+            <div>
+              <button
+                id="ed"
+                disabled
+                aria-pressed="false"
+                title="Edit the text before copying or downloading"
+              >
+                Edit</button
+              ><button id="cp" disabled>Copy</button
+              ><button id="dl" class="pri" disabled>Download</button
+              ><button id="dla" disabled title="ZIP with one TXT per file">
+                Download all
+              </button>
+            </div>
+          </div>
+          <div id="out" data-ph="Add a file to see the result."></div>
+        </section>
+      </div>
+    </main>
+    <input type="file" id="f1" multiple hidden /><input
+      type="file"
+      id="f2"
+      webkitdirectory
+      hidden
+    />
+    <script>
+      const $ = (s) => document.querySelector(s),
+        CDN = "https://cdn.jsdelivr.net/npm/";
+      const LIB = {
+          jszip: CDN + "jszip@3.10.1/dist/jszip.min.js",
+          xlsx: CDN + "xlsx@0.18.5/dist/xlsx.full.min.js",
+          mammoth: CDN + "mammoth@1.8.0/mammoth.browser.min.js",
+          pdf: CDN + "pdfjs-dist@3.11.174/build/pdf.min.js",
+          ocr: CDN + "tesseract.js@5.1.1/dist/tesseract.min.js",
+          stat: "data-engines.js",
+          sql: CDN + "sql.js@1.10.3/dist/sql-wasm.js",
+        },
+        got = {};
+      const lib = (k) =>
+        got[k] ||
+        (got[k] = new Promise((ok, no) => {
+          const s = document.createElement("script");
+          s.src = LIB[k];
+          s.onload = ok;
+          s.onerror = () => {
+            delete got[k];
+            no(new Error("needs internet to load " + k));
+          };
+          document.head.append(s);
+        }));
+      const ext = (p) =>
+        (p
+          .split("/")
+          .pop()
+          .match(/\.([^.]+)$/) || [0, ""])[1].toLowerCase();
+      const fmt = (n) =>
+        n < 1024
+          ? n + " B"
+          : n < 1048576
+            ? (n / 1024).toFixed(1) + " KB"
+            : (n / 1048576).toFixed(1) + " MB";
+      const dec = (s) => {
+        const t = document.createElement("textarea");
+        t.innerHTML = s;
+        return t.value;
+      };
+      const cell = (v) => {
+        if (v == null) return "";
+        v = String(v);
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+      };
+      const csv = (h, rows) =>
+        h.join(",") + "\n" + rows.map((r) => r.map(cell).join(",")).join("\n");
+      const SO = "[structure only - no data values included]\n";
+      const kind = (v) =>
+        v == null || v === ""
+          ? ""
+          : v instanceof Date
+            ? "date"
+            : typeof v === "number"
+              ? Number.isInteger(v)
+                ? "integer"
+                : "number"
+              : typeof v === "boolean"
+                ? "boolean"
+                : "text";
+      const shape = (rows, n) => {
+        const h = rows[0] || [],
+          d = rows.slice(1, 1001),
+          nc = Math.max(h.length, ...d.map((r) => r.length));
+        let t =
+          SO +
+          "rows (excluding header): " +
+          (n == null ? Math.max(rows.length - 1, 0) : n - 1) +
+          "\ncolumns: " +
+          nc +
+          "\n(first row is assumed to be the header)\n";
+        for (let j = 0; j < nc; j++) {
+          const k = new Set();
+          let e = 0;
+          d.forEach((r) => {
+            const x = kind(r[j]);
+            x ? k.add(x) : e++;
+          });
+          t +=
+            j +
+            1 +
+            ". " +
+            (h[j] ?? "(no header)") +
+            " : " +
+            ([...k].join("/") || "empty") +
+            (e ? " (empty cells in first 1000 rows: " + e + ")" : "") +
+            "\n";
+        }
+        return t;
+      };
+      const strings = (b) => {
+        const s = new TextDecoder("windows-1252").decode(b);
+        return [
+          ...new Set([
+            ...(s.match(/[\x20-\x7e]{5,}/g) || []),
+            ...(s.match(/(?:[\x20-\x7e]\0){5,}/g) || []).map((x) =>
+              x.replace(/\0/g, ""),
+            ),
+          ]),
+        ].join("\n");
+      };
+      const ARC =
+          /^(zip|jar|whl|egp|apk|nupkg|7z|rar|tar|gz|tgz|bz2|tbz2|xz|txz|lzma|cab|iso|arj|cpio|rpm|deb)$/,
+        ZIPS = /^(zip|jar|whl|egp|apk|nupkg)$/,
+        DOC = /^(docx|xlsx|xlsm|xlsb|pptx|odt|odp|ods|fods|epub|numbers)$/;
+      let sz,
+        n7 = 0,
+        sqlP;
+      const seven = () =>
+        sz ||
+        (sz = (async () => {
+          for (const v of ["1.2.0"]) {
+            const b = CDN + "7z-wasm@" + v + "/";
+            try {
+              return await (
+                await import(b + "7zz.es6.js")
+              ).default({
+                locateFile: (f) => b + f,
+                print() {},
+                printErr() {},
+              });
+            } catch (e) {}
+          }
+          throw new Error("needs internet to load the 7z engine");
+        })());
+      async function unpack7(f) {
+        const s = await seven(),
+          FS = s.FS,
+          id = "/a" + n7++,
+          inp = id + "/" + f.name.replace(/[^\w.\-]/g, "_"),
+          o = id + "/o",
+          r = [];
+        FS.mkdir(id);
+        FS.writeFile(inp, new Uint8Array(await f.arrayBuffer()));
+        try {
+          s.callMain(["x", inp, "-o" + o, "-y", "-bd"]);
+        } catch (e) {}
+        const w = (d) => {
+          for (const n of FS.readdir(d))
+            if (n !== "." && n !== "..") {
+              const p = d + "/" + n;
+              if (FS.isDir(FS.stat(p).mode)) {
+                w(p);
+                FS.rmdir(p);
+              } else {
+                r.push({
+                  path: p.slice(o.length + 1),
+                  file: new File([FS.readFile(p)], n),
+                });
+                FS.unlink(p);
+              }
+            }
+        };
+        try {
+          w(o);
+          FS.rmdir(o);
+        } catch (e) {}
+        try {
+          FS.unlink(inp);
+          FS.rmdir(id);
+        } catch (e) {}
+        if (!r.length) throw new Error("empty, encrypted or unsupported");
+        return r;
+      }
+      async function unzip(f) {
+        await lib("jszip");
+        const z = await JSZip.loadAsync(f);
+        return Promise.all(
+          Object.entries(z.files)
+            .filter(([, e]) => !e.dir)
+            .map(async ([n, e]) => ({
+              path: n,
+              file: new File([await e.async("blob")], n.split("/").pop(), {
+                lastModified: +e.date,
+              }),
+            })),
+        );
+      }
+      async function sqlite(b, o) {
+        await lib("sql");
+        const S = await (sqlP ||
+            (sqlP = initSqlJs({
+              locateFile: (x) => CDN + "sql.js@1.10.3/dist/" + x,
+            }))),
+          db = new S.Database(b),
+          r = [];
+        if (o.struct) {
+          const q = db.exec(
+            "select type,name,sql from sqlite_master where sql is not null",
+          )[0];
+          let t = SO;
+          for (const [ty, n, sql] of q ? q.values : []) {
+            let c = "";
+            if (ty === "table")
+              c =
+                " -- rows: " +
+                db.exec(
+                  'select count(*) from "' + n.replace(/"/g, '""') + '"',
+                )[0].values[0][0];
+            t += sql + ";" + c + "\n";
+          }
+          db.close();
+          return t;
+        }
+        for (const [n] of (
+          db.exec("select name from sqlite_master where type='table'")[0] || {
+            values: [],
+          }
+        ).values) {
+          const q = db.exec('select * from "' + n.replace(/"/g, '""') + '"')[0];
+          r.push(
+            "## Table: " +
+              n +
+              (q
+                ? " (" + q.values.length + " rows)\n" + csv(q.columns, q.values)
+                : " (empty)"),
+          );
+        }
+        db.close();
+        return r.join("\n\n");
+      }
+      async function magic(f) {
+        const h = [...new Uint8Array(await f.slice(0, 6).arrayBuffer())]
+          .map((x) => x.toString(16).padStart(2, "0"))
+          .join("");
+        return /^504b0304/.test(h)
+          ? "zip"
+          : /^377abcaf/.test(h)
+            ? "7z"
+            : /^52617221/.test(h)
+              ? "rar"
+              : /^1f8b/.test(h)
+                ? "gz"
+                : /^425a68/.test(h)
+                  ? "bz2"
+                  : /^fd377a585a/.test(h)
+                    ? "xz"
+                    : "";
+      }
+      const JUNK =
+        /(^|\/)(__MACOSX|node_modules|\.git)\/|\.DS_Store$|Thumbs\.db$/;
+      let items = [],
+        runId = 0,
+        sel = null,
+        blocks = new Map(),
+        dlName = "TXTify-merged.txt",
+        cur = [],
+        edit = false,
+        tm = 0;
+      const REL =
+          /^(ipynb|html|htm|json|xlsx|xlsm|xlsb|xls|ods|fods|dbf|dif|slk|prn|wk1|wk3|wks|qpw|numbers|pdf|svg|xml|xsd|xsl|xslt|plist|rss|kml|gpx|sas7bdat|xpt|sav|dta|por)$/,
+        DATA =
+          /^(sas7bdat|xpt|sav|dta|por|parquet|sqlite3?|db|xlsx|xlsm|xlsb|xls|ods|fods|dbf|dif|slk|prn|wk1|wk3|wks|qpw|numbers|csv|tsv|npy|pkl|pickle)$/;
+      const ck = (id) => $("#" + id).checked,
+        esc = (s) =>
+          s.replace(
+            /[&<>"]/g,
+            (c) =>
+              ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+          );
+      const opts = () => ({
+        merge: ck("merge"),
+        meta: ck("meta"),
+        compact: ck("compact"),
+        struct: ck("struct"),
+        ocr: ck("ocr"),
+        strs: ck("strs"),
+        name: ck("name"),
+        fPath: ck("fPath"),
+        fType: ck("fType"),
+        fSize: ck("fSize"),
+        fMod: ck("fMod"),
+        fChars: ck("fChars"),
+        fLines: ck("fLines"),
+      });
 
-async function extract(f,e,o){
- const buf=()=>f.arrayBuffer();
- if(o.struct&&/^(csv|tsv)$/.test(e)){await lib('xlsx');const t=await f.text();let n=0;for(let i=-1;(i=t.indexOf('\n',i+1))>=0;)n++;if(!t.endsWith('\n'))n++;const w=XLSX.read(t.slice(0,1.5e6),{type:'string',cellDates:true});return shape(XLSX.utils.sheet_to_json(w.Sheets[w.SheetNames[0]],{header:1,defval:null,blankrows:false}),n)}
- if(/^(pkl|pickle)$/.test(e)){await lib('stat');const t=TXTLIBS.pickleText(new Uint8Array(await buf()),o.struct);return o.struct?SO+t:t}
- if(e==='npy'){const b=new Uint8Array(await f.slice(0,65536).arrayBuffer()),L=b[6]===1?b[8]|b[9]<<8:b[8]|b[9]<<8|b[10]<<16|b[11]<<24,s=b[6]===1?10:12;return SO+new TextDecoder().decode(b.subarray(s,s+L)).trim()}
- if(/^(sas7bdat|xpt|sav|dta|por)$/.test(e)){await lib('stat');const b=new Uint8Array(await buf()),d=TXTLIBS.readData(TXTLIBS.detectFormat(b)||(e==='xpt'?'xport':e),b),v=d.variables,L=v.filter(x=>x.label);if(o.struct){const m=d.metadata;return SO+'rows: '+m.rowCount+'\ncolumns: '+v.length+(m.tableName?'\ntable name: '+m.tableName:'')+(m.fileLabel?'\nfile label: '+m.fileLabel:'')+(m.fileEncoding?'\nencoding: '+m.fileEncoding:'')+'\n'+v.map((x,i)=>(i+1)+'. '+x.name+' : '+TXTLIBS.ReadStatType[x.type]+'('+x.storageWidth+')'+(x.format?' format='+x.format:'')+(x.label?' label="'+x.label+'"':'')).join('\n')}
-return(o.compact||!L.length?'':'# labels: '+L.map(x=>x.name+'='+x.label).join('; ')+'\n')+csv(v.map(x=>x.name),d.rows)}
- if(e==='parquet'){await lib('stat');if(o.struct){const m=TXTLIBS.parquetMetadata(await buf());return SO+'rows: '+m.num_rows+'\nrow groups: '+m.row_groups.length+(m.created_by?'\ncreated by: '+m.created_by:'')+'\ncolumns:\n'+m.schema.slice(1).map((s,i)=>(i+1)+'. '+s.name+' : '+(s.type||'group')+(s.converted_type?' ('+s.converted_type+')':'')+' '+(s.repetition_type||'')).join('\n')}
-const r=await TXTLIBS.parquetReadObjects({file:await buf()});return csv(Object.keys(r[0]||{}),r.map(x=>Object.values(x)))}
- if(e==='epub'){await lib('jszip');const z=await JSZip.loadAsync(await buf()),r=[];for(const n of Object.keys(z.files).filter(n=>/\.x?html?$/.test(n)).sort())r.push(dec((await z.file(n).async('string')).replace(/<(script|style)[\s\S]*?<\/\1>/g,'').replace(/<\/(p|div|h\d|li)>|<br\s*\/?>/g,'\n').replace(/<[^>]+>/g,'')));return r.join('\n\n')}
- if(e==='svg'&&o.compact){const d=new DOMParser().parseFromString(await f.text(),'image/svg+xml'),t=[...d.querySelectorAll('title,desc,text')].map(n=>n.textContent.trim()).filter(Boolean);return'[svg '+(d.documentElement.getAttribute('viewBox')||'')+']'+(t.length?'\n'+t.join('\n'):'')}
- if(/^(xml|xsd|xsl|xslt|plist|rss|kml|gpx)$/.test(e)&&o.compact)return(await f.text()).replace(/^[ \t]+/gm,'').replace(/\n{2,}/g,'\n');
- if(e==='ipynb'){const j=JSON.parse(await f.text());return(j.cells||[]).map(c=>{const s=[].concat(c.source||[]).join('');if(c.cell_type!=='code')return s;let t='```\n'+s+'\n```';if(!o.compact)for(const x of c.outputs||[]){const v=x.text||(x.data&&x.data['text/plain']);if(v)t+='\n[output]\n'+[].concat(v).join('')}return t}).join('\n\n')}
- if(e==='html'||e==='htm'){if(!o.compact)return f.text();const d=new DOMParser().parseFromString(await f.text(),'text/html');d.querySelectorAll('script,style,noscript').forEach(n=>n.remove());return d.body.textContent.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n')}
- if(e==='json'&&o.compact){const t=await f.text();try{return JSON.stringify(JSON.parse(t))}catch{return t}}
- if(/^(xlsx|xlsm|xlsb|xls|ods|fods|dbf|dif|slk|prn|wk1|wk3|wks|qpw|numbers)$/.test(e)){await lib('xlsx');const w=XLSX.read(await buf(),{cellDates:o.struct});return w.SheetNames.map(n=>{if(o.struct)return'## Sheet: '+n+'\n'+shape(XLSX.utils.sheet_to_json(w.Sheets[n],{header:1,defval:null,blankrows:false}));let c=XLSX.utils.sheet_to_csv(w.Sheets[n],{blankrows:!o.compact});if(o.compact)c=c.replace(/,+$/gm,'');return'## Sheet: '+n+'\n'+c}).join('\n\n')}
- if(e==='docx'){await lib('mammoth');return(await mammoth.extractRawText({arrayBuffer:await buf()})).value}
- if(/^(pptx|odt|odp)$/.test(e)){await lib('jszip');const z=await JSZip.loadAsync(await buf());
-  if(e!=='pptx')return dec((await z.file('content.xml').async('string')).replace(/<\/text:(p|h)>/g,'\n').replace(/<[^>]+>/g,''));
-  const ns=Object.keys(z.files).filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>a.match(/\d+/)[0]-b.match(/\d+/)[0]),r=[];
-  for(const n of ns)r.push('## Slide '+n.match(/\d+/)[0]+'\n'+dec([...(await z.file(n).async('string')).matchAll(/<a:t>([^<]*)<\/a:t>/g)].map(m=>m[1]).join('\n')));return r.join('\n\n')}
- if(e==='pdf'){await lib('pdf');pdfjsLib.GlobalWorkerOptions.workerSrc=CDN+'pdfjs-dist@3.11.174/build/pdf.worker.min.js';const d=await pdfjsLib.getDocument({data:await buf()}).promise,r=[];for(let i=1;i<=d.numPages;i++){const c=await(await d.getPage(i)).getTextContent();r.push((o.compact?'':'## Page '+i+'\n')+c.items.map(t=>t.str+(t.hasEOL?'\n':' ')).join('').trim())}return r.join('\n\n')}
- if(e==='rtf')return(await f.text()).replace(/\\par[d]?/g,'\n').replace(/\\'[0-9a-f]{2}/g,'').replace(/\\[a-z]+-?\d* ?/g,'').replace(/[{}]/g,'');
- if(/^(png|jpe?g|gif|webp|bmp|avif)$/.test(e)){const b=await createImageBitmap(f);let t='[image '+b.width+'x'+b.height+' px]';if(o.ocr){await lib('ocr');t+='\nOCR text:\n'+(await Tesseract.recognize(f,'eng',{langPath:'https://cdn.jsdelivr.net/npm/@tesseract.js-data/eng@1.0.0/4.0.0_best_int'})).data.text.trim()}return t}
- const b=new Uint8Array(await buf()),h=b.subarray(0,4096);
- if(String.fromCharCode(...h.subarray(0,15))==='SQLite format 3')return sqlite(b,o);
- const u=h[0]===255&&h[1]===254?'utf-16le':h[0]===254&&h[1]===255?'utf-16be':0;if(u)return new TextDecoder(u).decode(b);
- if(!h.includes(0))try{return new TextDecoder('utf-8',{fatal:true}).decode(b)}catch{return new TextDecoder('windows-1252').decode(b)}
- if(o.strs&&!o.struct)return'[readable strings only, best effort]\n'+strings(b);
- throw new Error(o.struct?'unknown binary: skipped in structure-only mode to avoid exposing data':'binary format without a converter')}
+      async function extract(f, e, o) {
+        const buf = () => f.arrayBuffer();
+        if (o.struct && /^(csv|tsv)$/.test(e)) {
+          await lib("xlsx");
+          const t = await f.text();
+          let n = 0;
+          for (let i = -1; (i = t.indexOf("\n", i + 1)) >= 0; ) n++;
+          if (!t.endsWith("\n")) n++;
+          const w = XLSX.read(t.slice(0, 1.5e6), {
+            type: "string",
+            cellDates: true,
+          });
+          return shape(
+            XLSX.utils.sheet_to_json(w.Sheets[w.SheetNames[0]], {
+              header: 1,
+              defval: null,
+              blankrows: false,
+            }),
+            n,
+          );
+        }
+        if (/^(pkl|pickle)$/.test(e)) {
+          await lib("stat");
+          const t = TXTLIBS.pickleText(new Uint8Array(await buf()), o.struct);
+          return o.struct ? SO + t : t;
+        }
+        if (e === "npy") {
+          const b = new Uint8Array(await f.slice(0, 65536).arrayBuffer()),
+            L =
+              b[6] === 1
+                ? b[8] | (b[9] << 8)
+                : b[8] | (b[9] << 8) | (b[10] << 16) | (b[11] << 24),
+            s = b[6] === 1 ? 10 : 12;
+          return SO + new TextDecoder().decode(b.subarray(s, s + L)).trim();
+        }
+        if (/^(sas7bdat|xpt|sav|dta|por)$/.test(e)) {
+          await lib("stat");
+          const b = new Uint8Array(await buf()),
+            d = TXTLIBS.readData(
+              TXTLIBS.detectFormat(b) || (e === "xpt" ? "xport" : e),
+              b,
+            ),
+            v = d.variables,
+            L = v.filter((x) => x.label);
+          if (o.struct) {
+            const m = d.metadata;
+            return (
+              SO +
+              "rows: " +
+              m.rowCount +
+              "\ncolumns: " +
+              v.length +
+              (m.tableName ? "\ntable name: " + m.tableName : "") +
+              (m.fileLabel ? "\nfile label: " + m.fileLabel : "") +
+              (m.fileEncoding ? "\nencoding: " + m.fileEncoding : "") +
+              "\n" +
+              v
+                .map(
+                  (x, i) =>
+                    i +
+                    1 +
+                    ". " +
+                    x.name +
+                    " : " +
+                    TXTLIBS.ReadStatType[x.type] +
+                    "(" +
+                    x.storageWidth +
+                    ")" +
+                    (x.format ? " format=" + x.format : "") +
+                    (x.label ? ' label="' + x.label + '"' : ""),
+                )
+                .join("\n")
+            );
+          }
+          return (
+            (o.compact || !L.length
+              ? ""
+              : "# labels: " +
+                L.map((x) => x.name + "=" + x.label).join("; ") +
+                "\n") +
+            csv(
+              v.map((x) => x.name),
+              d.rows,
+            )
+          );
+        }
+        if (e === "parquet") {
+          await lib("stat");
+          if (o.struct) {
+            const m = TXTLIBS.parquetMetadata(await buf());
+            return (
+              SO +
+              "rows: " +
+              m.num_rows +
+              "\nrow groups: " +
+              m.row_groups.length +
+              (m.created_by ? "\ncreated by: " + m.created_by : "") +
+              "\ncolumns:\n" +
+              m.schema
+                .slice(1)
+                .map(
+                  (s, i) =>
+                    i +
+                    1 +
+                    ". " +
+                    s.name +
+                    " : " +
+                    (s.type || "group") +
+                    (s.converted_type ? " (" + s.converted_type + ")" : "") +
+                    " " +
+                    (s.repetition_type || ""),
+                )
+                .join("\n")
+            );
+          }
+          const r = await TXTLIBS.parquetReadObjects({ file: await buf() });
+          return csv(
+            Object.keys(r[0] || {}),
+            r.map((x) => Object.values(x)),
+          );
+        }
+        if (e === "epub") {
+          await lib("jszip");
+          const z = await JSZip.loadAsync(await buf()),
+            r = [];
+          for (const n of Object.keys(z.files)
+            .filter((n) => /\.x?html?$/.test(n))
+            .sort())
+            r.push(
+              dec(
+                (await z.file(n).async("string"))
+                  .replace(/<(script|style)[\s\S]*?<\/\1>/g, "")
+                  .replace(/<\/(p|div|h\d|li)>|<br\s*\/?>/g, "\n")
+                  .replace(/<[^>]+>/g, ""),
+              ),
+            );
+          return r.join("\n\n");
+        }
+        if (e === "svg" && o.compact) {
+          const d = new DOMParser().parseFromString(
+              await f.text(),
+              "image/svg+xml",
+            ),
+            t = [...d.querySelectorAll("title,desc,text")]
+              .map((n) => n.textContent.trim())
+              .filter(Boolean);
+          return (
+            "[svg " +
+            (d.documentElement.getAttribute("viewBox") || "") +
+            "]" +
+            (t.length ? "\n" + t.join("\n") : "")
+          );
+        }
+        if (/^(xml|xsd|xsl|xslt|plist|rss|kml|gpx)$/.test(e) && o.compact)
+          return (await f.text())
+            .replace(/^[ \t]+/gm, "")
+            .replace(/\n{2,}/g, "\n");
+        if (e === "ipynb") {
+          const j = JSON.parse(await f.text());
+          return (j.cells || [])
+            .map((c) => {
+              const s = [].concat(c.source || []).join("");
+              if (c.cell_type !== "code") return s;
+              let t = "```\n" + s + "\n```";
+              if (!o.compact)
+                for (const x of c.outputs || []) {
+                  const v = x.text || (x.data && x.data["text/plain"]);
+                  if (v) t += "\n[output]\n" + [].concat(v).join("");
+                }
+              return t;
+            })
+            .join("\n\n");
+        }
+        if (e === "html" || e === "htm") {
+          if (!o.compact) return f.text();
+          const d = new DOMParser().parseFromString(
+            await f.text(),
+            "text/html",
+          );
+          d.querySelectorAll("script,style,noscript").forEach((n) =>
+            n.remove(),
+          );
+          return d.body.textContent
+            .replace(/[ \t]+\n/g, "\n")
+            .replace(/\n{3,}/g, "\n\n");
+        }
+        if (e === "json" && o.compact) {
+          const t = await f.text();
+          try {
+            return JSON.stringify(JSON.parse(t));
+          } catch {
+            return t;
+          }
+        }
+        if (
+          /^(xlsx|xlsm|xlsb|xls|ods|fods|dbf|dif|slk|prn|wk1|wk3|wks|qpw|numbers)$/.test(
+            e,
+          )
+        ) {
+          await lib("xlsx");
+          const w = XLSX.read(await buf(), { cellDates: o.struct });
+          return w.SheetNames.map((n) => {
+            if (o.struct)
+              return (
+                "## Sheet: " +
+                n +
+                "\n" +
+                shape(
+                  XLSX.utils.sheet_to_json(w.Sheets[n], {
+                    header: 1,
+                    defval: null,
+                    blankrows: false,
+                  }),
+                )
+              );
+            let c = XLSX.utils.sheet_to_csv(w.Sheets[n], {
+              blankrows: !o.compact,
+            });
+            if (o.compact) c = c.replace(/,+$/gm, "");
+            return "## Sheet: " + n + "\n" + c;
+          }).join("\n\n");
+        }
+        if (e === "docx") {
+          await lib("mammoth");
+          return (await mammoth.extractRawText({ arrayBuffer: await buf() }))
+            .value;
+        }
+        if (/^(pptx|odt|odp)$/.test(e)) {
+          await lib("jszip");
+          const z = await JSZip.loadAsync(await buf());
+          if (e !== "pptx")
+            return dec(
+              (await z.file("content.xml").async("string"))
+                .replace(/<\/text:(p|h)>/g, "\n")
+                .replace(/<[^>]+>/g, ""),
+            );
+          const ns = Object.keys(z.files)
+              .filter((n) => /^ppt\/slides\/slide\d+\.xml$/.test(n))
+              .sort((a, b) => a.match(/\d+/)[0] - b.match(/\d+/)[0]),
+            r = [];
+          for (const n of ns)
+            r.push(
+              "## Slide " +
+                n.match(/\d+/)[0] +
+                "\n" +
+                dec(
+                  [
+                    ...(await z.file(n).async("string")).matchAll(
+                      /<a:t>([^<]*)<\/a:t>/g,
+                    ),
+                  ]
+                    .map((m) => m[1])
+                    .join("\n"),
+                ),
+            );
+          return r.join("\n\n");
+        }
+        if (e === "pdf") {
+          await lib("pdf");
+          pdfjsLib.GlobalWorkerOptions.workerSrc =
+            CDN + "pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+          const d = await pdfjsLib.getDocument({ data: await buf() }).promise,
+            r = [];
+          for (let i = 1; i <= d.numPages; i++) {
+            const c = await (await d.getPage(i)).getTextContent();
+            r.push(
+              (o.compact ? "" : "## Page " + i + "\n") +
+                c.items
+                  .map((t) => t.str + (t.hasEOL ? "\n" : " "))
+                  .join("")
+                  .trim(),
+            );
+          }
+          return r.join("\n\n");
+        }
+        if (e === "rtf")
+          return (await f.text())
+            .replace(/\\par[d]?/g, "\n")
+            .replace(/\\'[0-9a-f]{2}/g, "")
+            .replace(/\\[a-z]+-?\d* ?/g, "")
+            .replace(/[{}]/g, "");
+        if (/^(png|jpe?g|gif|webp|bmp|avif)$/.test(e)) {
+          const b = await createImageBitmap(f);
+          let t = "[image " + b.width + "x" + b.height + " px]";
+          if (o.ocr) {
+            await lib("ocr");
+            t +=
+              "\nOCR text:\n" +
+              (
+                await Tesseract.recognize(f, "eng", {
+                  langPath:
+                    "https://cdn.jsdelivr.net/npm/@tesseract.js-data/eng@1.0.0/4.0.0_best_int",
+                })
+              ).data.text.trim();
+          }
+          return t;
+        }
+        const b = new Uint8Array(await buf()),
+          h = b.subarray(0, 4096);
+        if (String.fromCharCode(...h.subarray(0, 15)) === "SQLite format 3")
+          return sqlite(b, o);
+        const u =
+          h[0] === 255 && h[1] === 254
+            ? "utf-16le"
+            : h[0] === 254 && h[1] === 255
+              ? "utf-16be"
+              : 0;
+        if (u) return new TextDecoder(u).decode(b);
+        if (!h.includes(0))
+          try {
+            return new TextDecoder("utf-8", { fatal: true }).decode(b);
+          } catch {
+            return new TextDecoder("windows-1252").decode(b);
+          }
+        if (o.strs && !o.struct)
+          return "[readable strings only, best effort]\n" + strings(b);
+        throw new Error(
+          o.struct
+            ? "unknown binary: skipped in structure-only mode to avoid exposing data"
+            : "binary format without a converter",
+        );
+      }
 
-async function walk(en,p=''){
- if(en.isFile)return new Promise(r=>en.file(f=>r([{file:f,path:p+f.name}]),()=>r([])));
- const rd=en.createReader(),all=[];
- for(;;){const b=await new Promise(r=>rd.readEntries(r,()=>r([])));if(!b.length)break;all.push(...b)}
- return(await Promise.all(all.map(c=>walk(c,p+en.name+'/')))).flat()}
+      async function walk(en, p = "") {
+        if (en.isFile)
+          return new Promise((r) =>
+            en.file(
+              (f) => r([{ file: f, path: p + f.name }]),
+              () => r([]),
+            ),
+          );
+        const rd = en.createReader(),
+          all = [];
+        for (;;) {
+          const b = await new Promise((r) => rd.readEntries(r, () => r([])));
+          if (!b.length) break;
+          all.push(...b);
+        }
+        return (
+          await Promise.all(all.map((c) => walk(c, p + en.name + "/")))
+        ).flat();
+      }
 
-const L=$('#list'),mk=(file,rel,arc='')=>({file,rel,arc,path:arc+rel});
-async function expand(list,d){
- return(await Promise.all(list.map(async it=>{
-  if(JUNK.test(it.path))return[];
-  let e=ext(it.path);
-  if(!DOC.test(e)&&!ARC.test(e))try{e=await magic(it.file)||e}catch{}
-  if(d<4&&ARC.test(e)){
-   try{const arc=it.path+'/',sub=ZIPS.test(e)?await unzip(it.file):await unpack7(it.file);return await expand(sub.map(x=>mk(x.file,x.path,arc)),d+1)}
-   catch(x){it.err='cannot open archive ('+(x.message||x)+')';it.dead=1}}
-  return[it]}))).flat()}
-async function add(list){
- const g=opts(),n=await expand(list.map(x=>x.rel==null?mk(x.file,x.path):x),0);
- n.forEach(i=>{const e=ext(i.path);i.o={name:g.name,meta:g.meta,compact:g.compact&&REL.test(e),struct:g.struct&&DATA.test(e)}});
- items.push(...n);if(!sel)sel=items[0]||null;draw();run()}
-let dq=0;const draw=()=>dq||(dq=requestAnimationFrame(()=>{dq=0;paint()}));
-const ckb=(k,v,en)=>'<span class="c"><input type="checkbox" data-k="'+k+'"'+(v&&en?' checked':'')+(en?'':' disabled')+'></span>';
-function paint(){
- $('#clr').hidden=$('.sub').hidden=!items.length;
- $('#cnt').textContent=items.length?items.length+' file'+(items.length>1?'s':''):'No files yet';
- L.innerHTML=items.map((i,n)=>{const e=ext(i.path);return'<li data-i="'+n+'"'+(i===sel?' class="act"':'')+'><div class="nm"><span class="p" title="'+esc(i.path)+'">'+esc(i.path)+'</span><em'+(i.err?' class="bad"':'')+'>'+esc(i.err||(i.k?fmt(i.file.size):'working...'))+'</em></div>'+ckb('name',i.o.name,1)+ckb('meta',i.o.meta,1)+ckb('compact',i.o.compact,REL.test(e))+ckb('struct',i.o.struct,DATA.test(e))+'<span class="mv"><button data-d="-1" title="Move up"'+(n?'':' disabled')+'>&#9650;</button><button data-d="1" title="Move down"'+(n<items.length-1?'':' disabled')+'>&#9660;</button></span><button class="x" title="Remove">&times;</button></li>'}).join('')}
-async function run(){
- const id=++runId,g=opts(),K=i=>[i.o.compact,i.o.struct,g.ocr,g.strs,i.file.size].join(),todo=items.filter(i=>!i.dead&&i.k!==K(i));let n=0,done=0;
- const w=async()=>{while(n<todo.length&&id===runId){const it=todo[n++];
-  try{it.text=await extract(it.file,ext(it.path),{...g,compact:it.o.compact,struct:it.o.struct});it.err='';if(!String(it.text).trim())throw new Error('no readable text found (empty or scanned)')}catch(e){it.text='';it.err=e.message||String(e)}
-  it.k=K(it);$('#stat').textContent='Converting '+(++done)+' of '+todo.length+'...';draw()}};
- await Promise.all(Array.from({length:Math.min(todo.length,g.ocr?2:Math.min(8,navigator.hardwareConcurrency||4))},w));
- if(id===runId)build()}
-function hdr(i,g){
- const nm=i.file.name,m=[],t=(i.o.meta&&g.fPath?i.rel.slice(0,i.rel.length-nm.length):'')+(i.o.name?nm:'');
- if(i.o.meta){
-  if(g.fType)m.push('Type: '+(ext(i.path)||'n/a'));
-  if(g.fSize)m.push('Size: '+fmt(i.file.size));
-  if(g.fMod)m.push('Modified: '+new Date(i.file.lastModified).toISOString().slice(0,10));
-  if(g.fChars)m.push('Characters: '+i.text.length);
-  if(g.fLines)m.push('Lines: '+i.text.split('\n').length)}
- return(t?'=== FILE: '+t+' ===\n':'')+(m.length?m.join(' | ')+'\n---\n':'')}
-function build(){
- const g=opts(),bad=items.filter(i=>i.err);
- items.forEach(i=>{if(i.text&&i.text.trim()){i.gen=hdr(i,g)+i.text.trim()+'\n';if(i.edit!=null&&i.editBase!==i.gen)i.edit=null;i.part=i.edit!=null?i.edit:i.gen}else i.part=null});
- if(!items.includes(sel))sel=items[0]||null;
- $('#fail').hidden=!bad.length;$('#fail span').textContent=bad.length+' file'+(bad.length>1?'s':'')+' could not be converted';
- show()}
-function foot(){const g=opts(),bad=items.filter(i=>i.err);return g.merge&&(g.meta||g.name)&&bad.length?'\n=== NOT CONVERTED ('+bad.length+') ===\n'+bad.map(i=>i.path+' - '+i.err).join('\n')+'\n':''}
-const getOut=()=>cur.map(i=>i.part).join('\n')+foot();
-function upStat(){const o=getOut();$('#stat').textContent=cur.length?cur.length+' file'+(cur.length>1?'s':'')+' · about '+Math.ceil(o.length/4).toLocaleString()+' tokens':'Your TXT appears here'}
-function show(){
- const g=opts(),box=$('#out'),st=box.scrollTop;
- cur=g.merge?items.filter(i=>i.part!=null):sel&&sel.part!=null?[sel]:[];
- blocks=new Map();
- const mkb=(t,i,ro)=>{const p=document.createElement('pre');p.className='blk';p.textContent=t;if(edit&&i&&!ro)p.contentEditable='plaintext-only';if(i){p._it=i;blocks.set(i,p)}return p};
- box.className=edit?'editing':'';
- const bl=cur.map(i=>i.part.length>2e5?mkb(i.part.slice(0,2e5)+'\n... preview truncated ('+(i.part.length-2e5).toLocaleString()+' more characters). Too large to edit here; Copy and Download include everything.',i,1):mkb(i.part,i));
- const f=foot();if(f)bl.push(mkb(f.trim()));
- if(!bl.length&&sel&&sel.err)bl.push(mkb(sel.path+'\ncould not be converted: '+sel.err));
- box.replaceChildren(...bl);
- box.scrollTop=g.merge?st:0;
- dlName=cur.length===1?cur[0].file.name+'.txt':'TXTify-merged.txt';
- upStat();
- $('#dl').disabled=$('#cp').disabled=$('#ed').disabled=!cur.length;$('#dla').disabled=!items.some(i=>i.part!=null);
- $('#ed').classList.toggle('on',edit);$('#ed').setAttribute('aria-pressed',edit);$('#ed').textContent=edit?'Editing':'Edit';
- [...L.children].forEach(li=>li.classList.toggle('act',items[+li.dataset.i]===sel));
- blocks.forEach((p,i)=>p.classList.toggle('act',i===sel))}
-function pickItem(it){sel=it;show();const b=blocks.get(it);if(b&&opts().merge)$('#out').scrollTo({top:b.offsetTop,behavior:'smooth'})}
-$('#out').oninput=e=>{const p=e.target.closest('.blk'),it=p&&p._it;if(!it)return;if(it.edit==null)it.editBase=it.gen;it.edit=it.part=p.textContent;clearTimeout(tm);tm=setTimeout(upStat,200)};
-L.onclick=e=>{const li=e.target.closest('li');if(!li)return;const i=+li.dataset.i,it=items[i],b=e.target.closest('.mv button');
- if(e.target.closest('.x')){items.splice(i,1);if(sel===it)sel=items[i]||items[i-1]||null;draw();build()}
- else if(b){const j=i+ +b.dataset.d;if(j>=0&&j<items.length){[items[i],items[j]]=[items[j],items[i]];draw();build()}}
- else if(!e.target.closest('input'))pickItem(it)};
-L.onchange=e=>{const t=e.target,it=items[+t.closest('li').dataset.i],k=t.dataset.k;it.o[k]=t.checked;k==='meta'||k==='name'?build():run()};
-const syncFi=()=>$('#fi').disabled=!ck('meta'),setAll=(k,re)=>{const v=ck(k);items.forEach(i=>i.o[k]=v&&re.test(ext(i.path)));draw();run()};
-$('#merge').onchange=show;
-$('#name').onchange=()=>{const v=ck('name');items.forEach(i=>i.o.name=v);draw();build()};
-$('#meta').onchange=()=>{const v=ck('meta');items.forEach(i=>i.o.meta=v);syncFi();draw();build()};
-$('#compact').onchange=()=>setAll('compact',REL);$('#struct').onchange=()=>setAll('struct',DATA);
-['ocr','strs'].forEach(i=>$('#'+i).onchange=run);
-['fPath','fType','fSize','fMod','fChars','fLines'].forEach(i=>$('#'+i).onchange=build);
-function save(b,n){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1e4)}
-$('#dl').onclick=()=>save(new Blob([getOut()],{type:'text/plain'}),dlName);
-$('#dla').onclick=async()=>{await lib('jszip');const z=new JSZip();items.filter(i=>i.part!=null).forEach(i=>z.file(i.path.replace(/[^\w.\-\/ ]/g,'_')+'.txt',i.part));save(await z.generateAsync({type:'blob'}),'TXTify-txt-files.zip')};
-$('#cp').onclick=async e=>{await navigator.clipboard.writeText(getOut());const b=e.target;b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)};
-$('#ed').onclick=()=>{edit=!edit;show()};
-$('#clr').onclick=()=>{items=[];sel=null;runId++;draw();build()};
-$('#cf').onclick=()=>navigator.clipboard.writeText(items.filter(i=>i.err).map(i=>i.path+' - '+i.err).join('\\n'));
-$('#rf').onclick=()=>{items=items.filter(i=>!i.err);if(!items.includes(sel))sel=items[0]||null;draw();build()};
-const pick=l=>add([...l].map(f=>({file:f,path:f.webkitRelativePath||f.name})));
-$('#b1').onclick=()=>$('#f1').click();$('#b2').onclick=()=>$('#f2').click();
-['f1','f2'].forEach(i=>$('#'+i).onchange=e=>{pick(e.target.files);e.target.value=''});
-const dz=$('#drop');
-['dragover','dragenter'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.add('on')}));
-['dragleave','drop'].forEach(t=>dz.addEventListener(t,()=>dz.classList.remove('on')));
-['dragover','drop'].forEach(t=>addEventListener(t,e=>e.preventDefault()));
-dz.addEventListener('drop',async e=>{const en=[...e.dataTransfer.items].map(i=>i.webkitGetAsEntry&&i.webkitGetAsEntry()).filter(Boolean);add((await Promise.all(en.map(x=>walk(x)))).flat())});
-const root=document.documentElement,tb=$('#theme'),SV='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',SUN=SV+'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',MOON=SV+'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
-try{const t=localStorage.getItem('theme');if(t)root.dataset.theme=t}catch(e){}
-const isDark=()=>root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches,setT=()=>{tb.innerHTML=isDark()?SUN:MOON;tb.title=isDark()?'Switch to light mode':'Switch to dark mode'};
-tb.onclick=()=>{const t=isDark()?'light':'dark';root.dataset.theme=t;try{localStorage.setItem('theme',t)}catch(e){}setT()};
-setT();syncFi();build();
-const GC='YOURCODE';
-if(GC!=='YOUR'+'CODE'&&/^https?:$/.test(location.protocol)&&location.hostname!=='localhost'&&navigator.doNotTrack!=='1')new Image().src='https://'+GC+'.goatcounter.com/count?p='+encodeURIComponent(location.pathname)+'&t=TXTify&r='+encodeURIComponent(document.referrer);
-</script>
-</body>
+      const L = $("#list"),
+        mk = (file, rel, arc = "") => ({ file, rel, arc, path: arc + rel });
+      async function expand(list, d) {
+        return (
+          await Promise.all(
+            list.map(async (it) => {
+              if (JUNK.test(it.path)) return [];
+              let e = ext(it.path);
+              if (!DOC.test(e) && !ARC.test(e))
+                try {
+                  e = (await magic(it.file)) || e;
+                } catch {}
+              if (d < 4 && ARC.test(e)) {
+                try {
+                  const arc = it.path + "/",
+                    sub = ZIPS.test(e)
+                      ? await unzip(it.file)
+                      : await unpack7(it.file);
+                  return await expand(
+                    sub.map((x) => mk(x.file, x.path, arc)),
+                    d + 1,
+                  );
+                } catch (x) {
+                  it.err = "cannot open archive (" + (x.message || x) + ")";
+                  it.dead = 1;
+                }
+              }
+              return [it];
+            }),
+          )
+        ).flat();
+      }
+      async function add(list) {
+        const g = opts(),
+          n = await expand(
+            list.map((x) => (x.rel == null ? mk(x.file, x.path) : x)),
+            0,
+          );
+        n.forEach((i) => {
+          const e = ext(i.path);
+          i.o = {
+            name: g.name,
+            meta: g.meta,
+            compact: g.compact && REL.test(e),
+            struct: g.struct && DATA.test(e),
+          };
+        });
+        items.push(...n);
+        if (!sel) sel = items[0] || null;
+        draw();
+        run();
+      }
+      let dq = 0;
+      const draw = () =>
+        dq ||
+        (dq = requestAnimationFrame(() => {
+          dq = 0;
+          paint();
+        }));
+      const ckb = (k, v, en) =>
+        '<span class="c"><input type="checkbox" data-k="' +
+        k +
+        '"' +
+        (v && en ? " checked" : "") +
+        (en ? "" : " disabled") +
+        "></span>";
+      function paint() {
+        $("#clr").hidden = $(".sub").hidden = !items.length;
+        $("#cnt").textContent = items.length
+          ? items.length + " file" + (items.length > 1 ? "s" : "")
+          : "No files yet";
+        L.innerHTML = items
+          .map((i, n) => {
+            const e = ext(i.path);
+            return (
+              '<li data-i="' +
+              n +
+              '"' +
+              (i === sel ? ' class="act"' : "") +
+              '><div class="nm"><span class="p" title="' +
+              esc(i.path) +
+              '">' +
+              esc(i.path) +
+              "</span><em" +
+              (i.err ? ' class="bad"' : "") +
+              ">" +
+              esc(i.err || (i.k ? fmt(i.file.size) : "working...")) +
+              "</em></div>" +
+              ckb("name", i.o.name, 1) +
+              ckb("meta", i.o.meta, 1) +
+              ckb("compact", i.o.compact, REL.test(e)) +
+              ckb("struct", i.o.struct, DATA.test(e)) +
+              '<span class="mv"><button data-d="-1" title="Move up"' +
+              (n ? "" : " disabled") +
+              '>&#9650;</button><button data-d="1" title="Move down"' +
+              (n < items.length - 1 ? "" : " disabled") +
+              '>&#9660;</button></span><button class="x" title="Remove">&times;</button></li>'
+            );
+          })
+          .join("");
+      }
+      async function run() {
+        const id = ++runId,
+          g = opts(),
+          K = (i) =>
+            [i.o.compact, i.o.struct, g.ocr, g.strs, i.file.size].join(),
+          todo = items.filter((i) => !i.dead && i.k !== K(i));
+        let n = 0,
+          done = 0;
+        const w = async () => {
+          while (n < todo.length && id === runId) {
+            const it = todo[n++];
+            try {
+              it.text = await extract(it.file, ext(it.path), {
+                ...g,
+                compact: it.o.compact,
+                struct: it.o.struct,
+              });
+              it.err = "";
+              if (!String(it.text).trim())
+                throw new Error("no readable text found (empty or scanned)");
+            } catch (e) {
+              it.text = "";
+              it.err = e.message || String(e);
+            }
+            it.k = K(it);
+            $("#stat").textContent =
+              "Converting " + ++done + " of " + todo.length + "...";
+            draw();
+          }
+        };
+        await Promise.all(
+          Array.from(
+            {
+              length: Math.min(
+                todo.length,
+                g.ocr ? 2 : Math.min(8, navigator.hardwareConcurrency || 4),
+              ),
+            },
+            w,
+          ),
+        );
+        if (id === runId) build();
+      }
+      function hdr(i, g) {
+        const nm = i.file.name,
+          m = [],
+          t =
+            (i.o.meta && g.fPath
+              ? i.rel.slice(0, i.rel.length - nm.length)
+              : "") + (i.o.name ? nm : "");
+        if (i.o.meta) {
+          if (g.fType) m.push("Type: " + (ext(i.path) || "n/a"));
+          if (g.fSize) m.push("Size: " + fmt(i.file.size));
+          if (g.fMod)
+            m.push(
+              "Modified: " +
+                new Date(i.file.lastModified).toISOString().slice(0, 10),
+            );
+          if (g.fChars) m.push("Characters: " + i.text.length);
+          if (g.fLines) m.push("Lines: " + i.text.split("\n").length);
+        }
+        return (
+          (t ? "=== FILE: " + t + " ===\n" : "") +
+          (m.length ? m.join(" | ") + "\n---\n" : "")
+        );
+      }
+      function build() {
+        const g = opts(),
+          bad = items.filter((i) => i.err);
+        items.forEach((i) => {
+          if (i.text && i.text.trim()) {
+            i.gen = hdr(i, g) + i.text.trim() + "\n";
+            if (i.edit != null && i.editBase !== i.gen) i.edit = null;
+            i.part = i.edit != null ? i.edit : i.gen;
+          } else i.part = null;
+        });
+        if (!items.includes(sel)) sel = items[0] || null;
+        $("#fail").hidden = !bad.length;
+        $("#fail span").textContent =
+          bad.length +
+          " file" +
+          (bad.length > 1 ? "s" : "") +
+          " could not be converted";
+        show();
+      }
+      function foot() {
+        const g = opts(),
+          bad = items.filter((i) => i.err);
+        return g.merge && (g.meta || g.name) && bad.length
+          ? "\n=== NOT CONVERTED (" +
+              bad.length +
+              ") ===\n" +
+              bad.map((i) => i.path + " - " + i.err).join("\n") +
+              "\n"
+          : "";
+      }
+      const getOut = () => cur.map((i) => i.part).join("\n") + foot();
+      function upStat() {
+        const o = getOut();
+        $("#stat").textContent = cur.length
+          ? cur.length +
+            " file" +
+            (cur.length > 1 ? "s" : "") +
+            " · about " +
+            Math.ceil(o.length / 4).toLocaleString() +
+            " tokens"
+          : "Your TXT appears here";
+      }
+      function show() {
+        const g = opts(),
+          box = $("#out"),
+          st = box.scrollTop;
+        cur = g.merge
+          ? items.filter((i) => i.part != null)
+          : sel && sel.part != null
+            ? [sel]
+            : [];
+        blocks = new Map();
+        const mkb = (t, i, ro) => {
+          const p = document.createElement("pre");
+          p.className = "blk";
+          p.textContent = t;
+          if (edit && i && !ro) p.contentEditable = "plaintext-only";
+          if (i) {
+            p._it = i;
+            blocks.set(i, p);
+          }
+          return p;
+        };
+        box.className = edit ? "editing" : "";
+        const bl = cur.map((i) =>
+          i.part.length > 2e5
+            ? mkb(
+                i.part.slice(0, 2e5) +
+                  "\n... preview truncated (" +
+                  (i.part.length - 2e5).toLocaleString() +
+                  " more characters). Too large to edit here; Copy and Download include everything.",
+                i,
+                1,
+              )
+            : mkb(i.part, i),
+        );
+        const f = foot();
+        if (f) bl.push(mkb(f.trim()));
+        if (!bl.length && sel && sel.err)
+          bl.push(mkb(sel.path + "\ncould not be converted: " + sel.err));
+        box.replaceChildren(...bl);
+        box.scrollTop = g.merge ? st : 0;
+        dlName =
+          cur.length === 1 ? cur[0].file.name + ".txt" : "TXTify-merged.txt";
+        upStat();
+        $("#dl").disabled = $("#cp").disabled = $("#ed").disabled = !cur.length;
+        $("#dla").disabled = !items.some((i) => i.part != null);
+        $("#ed").classList.toggle("on", edit);
+        $("#ed").setAttribute("aria-pressed", edit);
+        $("#ed").textContent = edit ? "Editing" : "Edit";
+        [...L.children].forEach((li) =>
+          li.classList.toggle("act", items[+li.dataset.i] === sel),
+        );
+        blocks.forEach((p, i) => p.classList.toggle("act", i === sel));
+      }
+      function pickItem(it) {
+        sel = it;
+        show();
+        const b = blocks.get(it);
+        if (b && opts().merge)
+          $("#out").scrollTo({ top: b.offsetTop, behavior: "smooth" });
+      }
+      $("#out").oninput = (e) => {
+        const p = e.target.closest(".blk"),
+          it = p && p._it;
+        if (!it) return;
+        if (it.edit == null) it.editBase = it.gen;
+        it.edit = it.part = p.textContent;
+        clearTimeout(tm);
+        tm = setTimeout(upStat, 200);
+      };
+      L.onclick = (e) => {
+        const li = e.target.closest("li");
+        if (!li) return;
+        const i = +li.dataset.i,
+          it = items[i],
+          b = e.target.closest(".mv button");
+        if (e.target.closest(".x")) {
+          items.splice(i, 1);
+          if (sel === it) sel = items[i] || items[i - 1] || null;
+          draw();
+          build();
+        } else if (b) {
+          const j = i + +b.dataset.d;
+          if (j >= 0 && j < items.length) {
+            [items[i], items[j]] = [items[j], items[i]];
+            draw();
+            build();
+          }
+        } else if (!e.target.closest("input")) pickItem(it);
+      };
+      L.onchange = (e) => {
+        const t = e.target,
+          it = items[+t.closest("li").dataset.i],
+          k = t.dataset.k;
+        it.o[k] = t.checked;
+        k === "meta" || k === "name" ? build() : run();
+      };
+      const syncFi = () => ($("#fi").disabled = !ck("meta")),
+        setAll = (k, re) => {
+          const v = ck(k);
+          items.forEach((i) => (i.o[k] = v && re.test(ext(i.path))));
+          draw();
+          run();
+        };
+      $("#merge").onchange = show;
+      $("#name").onchange = () => {
+        const v = ck("name");
+        items.forEach((i) => (i.o.name = v));
+        draw();
+        build();
+      };
+      $("#meta").onchange = () => {
+        const v = ck("meta");
+        items.forEach((i) => (i.o.meta = v));
+        syncFi();
+        draw();
+        build();
+      };
+      $("#compact").onchange = () => setAll("compact", REL);
+      $("#struct").onchange = () => setAll("struct", DATA);
+      ["ocr", "strs"].forEach((i) => ($("#" + i).onchange = run));
+      ["fPath", "fType", "fSize", "fMod", "fChars", "fLines"].forEach(
+        (i) => ($("#" + i).onchange = build),
+      );
+      function save(b, n) {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(b);
+        a.download = n;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1e4);
+      }
+      $("#dl").onclick = () =>
+        save(new Blob([getOut()], { type: "text/plain" }), dlName);
+      $("#dla").onclick = async () => {
+        await lib("jszip");
+        const z = new JSZip();
+        items
+          .filter((i) => i.part != null)
+          .forEach((i) =>
+            z.file(i.path.replace(/[^\w.\-\/ ]/g, "_") + ".txt", i.part),
+          );
+        save(await z.generateAsync({ type: "blob" }), "TXTify-txt-files.zip");
+      };
+      $("#cp").onclick = async (e) => {
+        await navigator.clipboard.writeText(getOut());
+        const b = e.target;
+        b.textContent = "Copied";
+        setTimeout(() => (b.textContent = "Copy"), 1500);
+      };
+      $("#ed").onclick = () => {
+        edit = !edit;
+        show();
+      };
+      $("#clr").onclick = () => {
+        items = [];
+        sel = null;
+        runId++;
+        draw();
+        build();
+      };
+      $("#cf").onclick = () =>
+        navigator.clipboard.writeText(
+          items
+            .filter((i) => i.err)
+            .map((i) => i.path + " - " + i.err)
+            .join("\\n"),
+        );
+      $("#rf").onclick = () => {
+        items = items.filter((i) => !i.err);
+        if (!items.includes(sel)) sel = items[0] || null;
+        draw();
+        build();
+      };
+      const pick = (l) =>
+        add(
+          [...l].map((f) => ({
+            file: f,
+            path: f.webkitRelativePath || f.name,
+          })),
+        );
+      $("#b1").onclick = () => $("#f1").click();
+      $("#b2").onclick = () => $("#f2").click();
+      ["f1", "f2"].forEach(
+        (i) =>
+          ($("#" + i).onchange = (e) => {
+            pick(e.target.files);
+            e.target.value = "";
+          }),
+      );
+      const dz = $("#drop");
+      ["dragover", "dragenter"].forEach((t) =>
+        dz.addEventListener(t, (e) => {
+          e.preventDefault();
+          dz.classList.add("on");
+        }),
+      );
+      ["dragleave", "drop"].forEach((t) =>
+        dz.addEventListener(t, () => dz.classList.remove("on")),
+      );
+      ["dragover", "drop"].forEach((t) =>
+        addEventListener(t, (e) => e.preventDefault()),
+      );
+      dz.addEventListener("drop", async (e) => {
+        const en = [...e.dataTransfer.items]
+          .map((i) => i.webkitGetAsEntry && i.webkitGetAsEntry())
+          .filter(Boolean);
+        add((await Promise.all(en.map((x) => walk(x)))).flat());
+      });
+      const root = document.documentElement,
+        tb = $("#theme"),
+        SV =
+          '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
+        SUN =
+          SV +
+          '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+        MOON =
+          SV + '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+      try {
+        const t = localStorage.getItem("theme");
+        if (t) root.dataset.theme = t;
+      } catch (e) {}
+      const isDark = () =>
+          root.dataset.theme
+            ? root.dataset.theme === "dark"
+            : matchMedia("(prefers-color-scheme:dark)").matches,
+        setT = () => {
+          tb.innerHTML = isDark() ? SUN : MOON;
+          tb.title = isDark() ? "Switch to light mode" : "Switch to dark mode";
+        };
+      tb.onclick = () => {
+        const t = isDark() ? "light" : "dark";
+        root.dataset.theme = t;
+        try {
+          localStorage.setItem("theme", t);
+        } catch (e) {}
+        setT();
+      };
+      setT();
+      syncFi();
+      build();
+      const GC = "rihalabs";
+      if (
+        GC !== "YOUR" + "CODE" &&
+        /^https?:$/.test(location.protocol) &&
+        location.hostname !== "localhost" &&
+        navigator.doNotTrack !== "1"
+      )
+        new Image().src =
+          "https://" +
+          GC +
+          ".goatcounter.com/count?p=" +
+          encodeURIComponent(location.pathname) +
+          "&t=TXTify&r=" +
+          encodeURIComponent(document.referrer);
+    </script>
+  </body>
 </html>
